@@ -2,21 +2,48 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { celebrate, Joi, errors } = require('celebrate');
+const cors = require('cors');
+
 const usersRouter = require('./routes/users');
+const cardsRouter = require('./routes/cards');
+
 const { login, createUsers } = require('./controllers/users');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const cardsRouter = require('./routes/cards');
-const NotFound = require('./errors/not-found');
 const { auth } = require('./middlewares/auth');
 const { isValidUrl } = require('./utils/validation');
 
+const NotFound = require('./errors/not-found');
+
 const { PORT = 3000 } = process.env;
 const app = express();
+
 mongoose.connect('mongodb://localhost:27017/mestodb');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const options = {
+  origin: [
+    'http://localhost:3000',
+    'http://mesto.timelas.nomoredomains.work',
+    'https://mesto.timelas.nomoredomains.work',
+    'http://api.mesto.timelas.nomoredomains.work',
+    'https://api.mesto.timelas.nomoredomains.work',
+  ],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
+  credentials: true,
+};
+
+app.use('*', cors(options));
 app.use(requestLogger);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -50,7 +77,7 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
-  res.status(statusCode).send({ message: statusCode === 500 ? 'Ошибка по умолчанию' : message });
+  res.status(statusCode).send({ message: statusCode === 500 ? 'Ошибка' : message });
   next();
 });
 

@@ -1,3 +1,4 @@
+import api from './Api';
 export const BASE_URL = 'https://auth.nomoreparties.co';
 
 const checkResponse = (res) => {
@@ -27,10 +28,11 @@ export const authorize = ({email, password}) => {
             'content-type': 'application/json'
         },
         body: JSON.stringify({email, password})
-    }).then(checkResponse) 
+    }).then(checkResponse)
     .then((data) => {
         if(data.token) {
-            localStorage.setItem('jwt', data.token)
+            localStorage.setItem('jwt', data.token);
+            api.updateHeaders();
             return data.token;
         }
     })

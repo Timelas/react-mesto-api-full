@@ -91,12 +91,19 @@
         }
         return Promise.reject(`Ошибка ${res.status}`);
     }
+
+    updateHeaders() {
+      this._headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+      }
+    }
   }
 
   const api = new Api({
     baseUrl: 'https://api.mesto.timelas.nomoredomains.work',
     headers: {
-      authorization: '60bdf67c-096f-4da4-8c27-4a10609300f8',
+      'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
       'Content-Type': 'application/json'
     }
   });
