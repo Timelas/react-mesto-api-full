@@ -51,8 +51,8 @@ React.useEffect(() => {
   .catch((err) => {
       console.log(err);
   })
-  }, []) 
-  
+  }, [])
+
   React.useEffect(() => {
     const jwt = localStorage.getItem("jwt");
     if (jwt) {
@@ -98,7 +98,7 @@ React.useEffect(() => {
     })
     .catch((err) => {
       console.log(err)});
-  } 
+  }
 
   function handleCardDelete(card) {
     api.deleteCard(card._id)
@@ -117,7 +117,7 @@ React.useEffect(() => {
     }
 
     document.addEventListener('keydown', closeByEscape)
-    
+
     return () => document.removeEventListener('keydown', closeByEscape)
 }, [])
 
@@ -137,7 +137,7 @@ function handleUpdateUser({name, about}) {
     .then((data) => {
         setCurrentUser(data)
         closeAllPopups()
-    }) 
+    })
     .catch((err) => {
         console.log(err)
     })
@@ -153,9 +153,10 @@ function handleUpdateUser({name, about}) {
     .catch((err) => {
         console.log(err)
     })
-  } 
+  }
 
   function handleSignOut() {
+    setCurrentUser({_id: null, avatar: ''})
     setLoggedIn(false);
     localStorage.removeItem("jwt");
     setEmail("");
@@ -219,10 +220,10 @@ function handleUpdateUser({name, about}) {
   return (
   <CurrentUserContext.Provider value={currentUser}>
     <div className="page">
-        <Header 
+        <Header
           handleSignOut={handleSignOut}
           loggedIn={loggedIn}
-          email={email} /> 
+          email={email} />
       <Switch>
         <Route path="/sign-in">
           <Login authorization={authorization} />
@@ -232,9 +233,9 @@ function handleUpdateUser({name, about}) {
         </Route>
         <ProtectedRoute exact path="/main"
           component={Main}
-          onEditProfile={handleEditProfileClick} 
-          onAddPlace={handleAddPlaceClick} 
-          onEditAvatar={handleEditAvatarClick} 
+          onEditProfile={handleEditProfileClick}
+          onAddPlace={handleAddPlaceClick}
+          onEditAvatar={handleEditAvatarClick}
           onCardClick={handleCardClick}
           onCardLike={handleCardLike}
           onCardDelete={handleCardDelete}
@@ -245,23 +246,23 @@ function handleUpdateUser({name, about}) {
         </Route>
       </Switch>
       <Footer />
-      <EditProfilePopup 
-        isOpen={isEditProfilePopupOpen} 
-        onClose={closeAllPopups} 
-        onUpdateUser={handleUpdateUser} /> 
-      <AddPlacePopup 
-        isOpen={isAddPlacePopupOpen} 
-        onClose={closeAllPopups} 
-        onAddPlace={handleAddPlaceSubmit} /> 
-      <EditAvatarPopup 
-        isOpen={isEditAvatarPopupOpen} 
-        onClose={closeAllPopups} 
-        onUpdateAvatar={handleUpdateAvatar} /> 
+      <EditProfilePopup
+        isOpen={isEditProfilePopupOpen}
+        onClose={closeAllPopups}
+        onUpdateUser={handleUpdateUser} />
+      <AddPlacePopup
+        isOpen={isAddPlacePopupOpen}
+        onClose={closeAllPopups}
+        onAddPlace={handleAddPlaceSubmit} />
+      <EditAvatarPopup
+        isOpen={isEditAvatarPopupOpen}
+        onClose={closeAllPopups}
+        onUpdateAvatar={handleUpdateAvatar} />
       <PopupWithForm
         title="Вы уверены?"
         name="removeCard"
         buttonText="Да"
-        onClose={closeAllPopups} />        
+        onClose={closeAllPopups} />
       <ImagePopup
         card={selectedCard}
         onClose={closeAllPopups} />
