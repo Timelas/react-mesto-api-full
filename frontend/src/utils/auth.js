@@ -1,5 +1,5 @@
 import api from './Api';
-export const BASE_URL = 'https://auth.nomoreparties.co';
+export const BASE_URL = 'https://api.mesto.timelas.nomoredomains.work';
 
 const checkResponse = (res) => {
     if (!res.ok) {
