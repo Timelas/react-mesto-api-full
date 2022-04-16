@@ -16,14 +16,15 @@ import PopupWithForm from './PopupWithForm';
   }
 
   function handleNameChange(e) {
-    setName(e.target.value)
+    setName(e.target.value);
   }
 
   function handleDescriptionChange(e) {
-      setDescription(e.target.value)
+      setDescription(e.target.value);
   }
 
   React.useEffect(() => {
+    console.log(currentUser);
     setName(currentUser.name);
     setDescription(currentUser.about);
   }, [currentUser]);

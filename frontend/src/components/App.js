@@ -35,8 +35,7 @@ function App() {
 
   React.useEffect(() => {
     if (loggedIn) {
-    api
-      .getInitialCards()
+    api.getInitialCards()
       .then(cardList => {
         setCards(cardList)
       })
@@ -130,7 +129,7 @@ function handleUpdateUser({name, about}) {
       const updateUser = {...currentUser};
       updateUser.name = name;
       updateUser.about = about;
-      setCurrentUser({...updateUser})
+      setCurrentUser({...updateUser});
       closeAllPopups();
   })
   .catch((err) =>{
