@@ -49,8 +49,8 @@ app.post('/signup', celebrate({
 
 app.use(auth);
 
-app.use('/', usersRouter);
 app.use('/', cardsRouter);
+app.use('/', usersRouter);
 
 app.use(errorLogger);
 
