@@ -33,25 +33,28 @@ function App() {
   const [message, setMessage] = React.useState({ pathImage: "", text: "" });
   const [email, setEmail] = React.useState("");
 
-  React.useEffect(()  => {
-    api.getInitialCards()
-        .then(data => {
-            setCards(data)
-        })
-        .catch((err) => {
-            console.log(err)
-        });
-  }, [])
+  React.useEffect(() => {
+    if (loggedIn) {
+    api
+      .getInitialCards()
+      .then(cardList => {
+        setCards(cardList)
+      })
+      .catch((err) => {
+      console.log(err)
+    })
+  }
+  }, [loggedIn]);
 
-React.useEffect(() => {
-  api.getUserInfo()
-  .then(data => {
-      setCurrentUser(data);
-  })
-  .catch((err) => {
-      console.log(err);
-  })
-  }, [])
+  React.useEffect(() => {
+    if (loggedIn) {
+    api.getUserInfo()
+      .then((user) => {
+        setCurrentUser(user.data);
+      })
+      .catch((err) => console.log(err));
+    }
+  }, [loggedIn]);
 
   React.useEffect(() => {
     const jwt = localStorage.getItem("jwt");
@@ -91,10 +94,10 @@ React.useEffect(() => {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    const isLiked = card.likes.some((item)=> item === currentUser._id);
     api.changeLike(card._id, !isLiked)
     .then((newCard) => {
-        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+        setCards((state) => state.map((currentCard) => currentCard._id === card._id ? newCard : currentCard));
     })
     .catch((err) => {
       console.log(err)});
@@ -103,7 +106,7 @@ React.useEffect(() => {
   function handleCardDelete(card) {
     api.deleteCard(card._id)
     .then(() => {
-        setCards((state) => state.filter((c) => c._id !== card._id));
+        setCards((state) => state.filter((element) => element !== card));
     })
     .catch((err) => {
       console.log(err)});
@@ -159,6 +162,7 @@ function handleUpdateUser({name, about}) {
     setCurrentUser({_id: null, avatar: ''})
     setLoggedIn(false);
     localStorage.removeItem("jwt");
+    api.updateHeaders();
     setEmail("");
     history.push("/sign-in");
   }
