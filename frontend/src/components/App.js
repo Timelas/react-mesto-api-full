@@ -26,7 +26,7 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCards] = React.useState({isOpen: false});
-  const [currentUser , setCurrentUser] = React.useState({});
+  const [currentUser , setCurrentUser] = React.useState({_id: null, avatar: ''});
   const [cards, setCards] = React.useState([]);
   const [isToooltipOpen, setIsTooltipOpen] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -126,9 +126,12 @@ function App() {
 
 function handleUpdateUser({name, about}) {
   api.editProfile(name, about)
-  .then((data) => {
-      setCurrentUser(data)
-      closeAllPopups()
+  .then(() => {
+      const updateUser = {...currentUser};
+      updateUser.name = name;
+      updateUser.about = about;
+      setCurrentUser({...updateUser})
+      closeAllPopups();
   })
   .catch((err) =>{
       console.log(err)
