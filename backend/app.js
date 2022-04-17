@@ -54,13 +54,13 @@ app.use(auth);
 app.use('/', cardsRouter);
 app.use('/', usersRouter);
 
-app.use(errorLogger);
-
-app.use(errors());
-
 app.use((req, res, next) => {
   next(new NotFound('Маршрут не найден'));
 });
+
+app.use(errorLogger);
+
+app.use(errors());
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
