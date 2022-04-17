@@ -36,7 +36,7 @@ const deleteCardById = (req, res, next) => {
         throw new NoAccess('Вы не можете удалить карточку другого пользователя');
       } else {
         Card.findByIdAndDelete(req.params.cardId)
-          .then((cardById) => res.send({ name: cardById.name, link: cardById.link }))
+          .then((cardById) => res.send(cardById))
           .catch(next);
       }
     })
