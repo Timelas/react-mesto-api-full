@@ -79,7 +79,7 @@ const updateAvatar = (req, res, next) => {
   const owner = req.user._id;
 
   User.findByIdAndUpdate(owner, { avatar }, { new: true, runValidators: true })
-    .then((user) => res.send({ user }))
+    .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequest('Некорректные данные!'));
@@ -99,7 +99,7 @@ const login = (req, res, next) => {
         'some-secret-key',
         { expiresIn: '7d' },
       );
-      return res.send({ token });
+      return res.send(token);
     })
     .catch((err) => {
       throw new NotAuth(err.message);

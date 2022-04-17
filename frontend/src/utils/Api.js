@@ -44,7 +44,7 @@
     }
 
     likeCard(cardId) {
-      return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+      return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
         method: 'PUT',
         headers: this._headers
       })
@@ -52,7 +52,7 @@
     }
 
     dislikeCard(cardId) {
-      return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+      return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
         method: 'DELETE',
         headers: this._headers
       })
@@ -61,9 +61,9 @@
 
     changeLike(cardId, isLiked) {
       if (isLiked) {
-      return this.likeCard(cardId);
+      return this.dislikeCard(cardId);
     } else {
-      return this.dislikeCard(cardId)
+      return this.likeCard(cardId);
     }}
 
     deleteCard(cardId) {

@@ -49,7 +49,7 @@ function App() {
     if (loggedIn) {
     api.getUserInfo()
       .then((user) => {
-        setCurrentUser(user.data);
+        setCurrentUser(user);
       })
       .catch((err) => console.log(err));
     }
@@ -61,7 +61,7 @@ function App() {
       auth.getContent(jwt)
         .then((res) => {
           setLoggedIn(true);
-          setEmail(res.data.email);
+          setEmail(res.email);
           history.push("/");
         })
         .catch((err) => console.log(err));
@@ -94,7 +94,7 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((item)=> item === currentUser._id);
-    api.changeLike(card._id, !isLiked)
+    api.changeLike(card._id, isLiked)
     .then((newCard) => {
         setCards((state) => state.map((currentCard) => currentCard._id === card._id ? newCard : currentCard));
     })
@@ -137,7 +137,7 @@ function handleUpdateUser({name, about}) {
   })
   }
 
-  function handleUpdateAvatar({avatar}) {
+  function handleUpdateAvatar({ avatar }) {
     api.editAvatar(avatar)
     .then((data) => {
         setCurrentUser(data)
@@ -148,7 +148,7 @@ function handleUpdateUser({name, about}) {
     })
   }
 
-  function handleAddPlaceSubmit({name, link}) {
+  function handleAddPlaceSubmit({ name, link }) {
     api.addNewCard(name, link)
 
     .then((data) => {
