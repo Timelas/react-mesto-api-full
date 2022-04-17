@@ -99,7 +99,7 @@ const login = (req, res, next) => {
         'some-secret-key',
         { expiresIn: '7d' },
       );
-      return res.send(token);
+      return res.send({ token });
     })
     .catch((err) => {
       throw new NotAuth(err.message);

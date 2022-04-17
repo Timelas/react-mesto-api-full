@@ -150,7 +150,6 @@ function handleUpdateUser({name, about}) {
 
   function handleAddPlaceSubmit({ name, link }) {
     api.addNewCard(name, link)
-
     .then((data) => {
         setCards([data, ...cards])
         closeAllPopups()
